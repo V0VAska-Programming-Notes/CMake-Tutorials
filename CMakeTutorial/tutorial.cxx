@@ -6,6 +6,8 @@
 
 #include "TutorialConfig.h"
 
+#include "MathFunctions.h"
+
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
@@ -21,7 +23,7 @@ int main(int argc, char* argv[])
     const double inputValue = std::stod(argv[1]);
     
     // calculate square root
-    const double outputValue = sqrt(inputValue);
+    const double outputValue = mysqrt(inputValue);
     std::cout << "The square root of " << inputValue << " is " << outputValue
               << std::endl;
     return 0;
