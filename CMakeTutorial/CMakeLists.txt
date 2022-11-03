@@ -13,17 +13,18 @@ target_compile_options(tutorial_compiler_flags
         "$<${msvc_cxx}:$<BUILD_INTERFACE:-W3>>"
 )
 
-option(USE_MYMATH "Use tutorial provided math implementation" ON)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 configure_file(TutorialConfig.h.in TutorialConfig.h)
 
-if(USE_MYMATH)
-    add_subdirectory(MathFunctions)
-    list(APPEND EXTRA_LIBS MathFunctions)
-endif(USE_MYMATH)
+add_subdirectory(MathFunctions)
 
 add_executable(Tutorial tutorial.cxx)
-target_link_libraries(Tutorial PUBLIC ${EXTRA_LIBS} tutorial_compiler_flags)
+target_link_libraries(Tutorial PUBLIC MathFunctions tutorial_compiler_flags)
 
 target_include_directories(Tutorial
     PUBLIC
