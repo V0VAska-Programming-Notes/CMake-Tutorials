@@ -2,15 +2,19 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <regex>
 
 #include "TutorialConfig.h"
 
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
-        std::cout << argv[0] << " Version " << Tutorial_VERSION_MAJOR << "."
+        std::cmatch match;
+        std::regex_search(argv[0], match, std::regex("[^\\\\|/]+$"));
+
+        std::cout << match[0] << " Version " << Tutorial_VERSION_MAJOR << "."
                   << Tutorial_VERSION_MINOR << std::endl;
-        std::cout << "Usage: " << argv[0] << " number" << std::endl;
+        std::cout << "Usage: " << match[0] << " number" << std::endl;
         return 1;
     }
 
