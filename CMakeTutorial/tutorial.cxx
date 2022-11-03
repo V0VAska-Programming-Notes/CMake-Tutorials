@@ -12,6 +12,9 @@
 
 int main(int argc, char* argv[])
 {
+    // V0VAska: for test purposes
+    int not_used_var;
+
     if (argc < 2) {
         std::cmatch match;
         std::regex_search(argv[0], match, std::regex("[^\\\\|/]+$"));
