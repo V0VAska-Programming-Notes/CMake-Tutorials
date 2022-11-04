@@ -64,6 +64,9 @@ target_compile_definitions(MathFunctions
         MATHLIBRARY_EXPORT
 )
 
+set_property(TARGET MathFunctions PROPERTY VERSION "1.0.0")
+set_property(TARGET MathFunctions PROPERTY SOVERSION "1")
+
 set(installable_libs MathFunctions tutorial_compiler_flags)
 if(TARGET mysqrt)
     list(APPEND installable_libs mysqrt)
