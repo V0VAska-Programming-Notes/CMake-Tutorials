@@ -2,9 +2,13 @@ add_library(MathFunctions
     MathFunctions.cxx
 )
 
+include(GenerateExportHeader)
+generate_export_header(MathFunctions)
+
 target_include_directories(MathFunctions
     PUBLIC
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
         $<INSTALL_INTERFACE:include>
 )
 
@@ -59,11 +63,6 @@ target_link_libraries(MathFunctions
         tutorial_compiler_flags
 )
 
-target_compile_definitions(MathFunctions
-    PRIVATE
-        MATHLIBRARY_EXPORT
-)
-
 set_property(TARGET MathFunctions PROPERTY VERSION "1.0.0")
 set_property(TARGET MathFunctions PROPERTY SOVERSION "1")
 
@@ -77,4 +76,8 @@ install(TARGETS
     EXPORT MathFunctionsTargets
     DESTINATION lib)
 
-install(FILES MathFunctions.h DESTINATION include)
+install(FILES
+        MathFunctions.h
+        ${CMAKE_CURRENT_BINARY_DIR}/mathfunctions_export.h
+    DESTINATION include
+)
