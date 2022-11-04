@@ -4,7 +4,8 @@ add_library(MathFunctions
 
 target_include_directories(MathFunctions
     PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}"
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+        $<INSTALL_INTERFACE:include>
 )
 
 option(USE_MYMATH "Use tutorial provided math implementation" ON)
@@ -68,6 +69,9 @@ if(TARGET mysqrt)
     list(APPEND installable_libs mysqrt)
 endif()
 
-install(TARGETS ${installable_libs} DESTINATION lib)
+install(TARGETS
+    ${installable_libs}
+    EXPORT MathFunctionsTargets
+    DESTINATION lib)
 
 install(FILES MathFunctions.h DESTINATION include)
