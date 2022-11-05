@@ -437,3 +437,123 @@ target_link_libraries(MathFunctions INTERFACE Foo::Foo Bar::Bar)
 
 With this approach the package references its external dependencies only through the names of IMPORTED targets. When a consumer uses the installed package, the consumer will run the appropriate find_package() commands (via the find_dependency macro described above) to find the dependencies and populate the imported targets with appropriate paths on their own machine.
 
+# Using the Package Configuration File
+Now we're ready to create a project to use the installed MathFunctions library. In this section we will be using source code from `./Downstream`. In this directory, there is a source file called main.cxx that uses the MathFunctions library to calculate the square root of a given number and then prints the results:
+
+```c++
+// A simple program that outputs the square root of a number
+#include <iostream>
+#include <string>
+
+#include "MathFunctions.h"
+
+int main(int argc, char* argv[])
+{
+    if (argc < 2)
+    {
+        std::cout << "Usage: " << argv[0] << " number" << std::endl;
+        return 1;
+    }
+
+    // convert input to double
+    const double inputValue = std::stod(argv[1]);
+
+    // calculate square root
+    const double sqrt = MathFunctions::sqrt(inputValue);
+    std::cout << "The square root of " << inputValue << " is " << sqrt
+              << std::endl;
+    
+    return 0;
+}
+```
+
+As before, we'll start with the cmake_minimum_required() and project() commands in the CMakeLists.txt file. For this project, we'll also specify the C++ standard.
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(Downstream)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+```
+
+We can use the find_package() command:
+
+```cmake
+find_package(MathFunctions 3.4.1 EXACT)
+```
+
+Create an executable:
+
+```cmake
+add_executable(myexe main.cxx)
+```
+
+And link to the MathFunctions library:
+
+```cmake
+target_link_libraries(myexe PRIVATE MathFunctions::MathFunctions)
+```
+
+That's it! Now let's try to build the Downstream project.
+
+```
+mkdir Downstream_build
+cd Downstream_build
+cmake ../Downstream
+cmake --build .
+```
+
+A warning may have appeared during CMake configuration:
+
+```
+CMake Warning at CMakeLists.txt:4 (find_package):
+  By not providing "FindMathFunctions.cmake" in CMAKE_MODULE_PATH this
+  project has asked CMake to find a package configuration file provided by
+  "MathFunctions", but CMake did not find one.
+
+  Could not find a package configuration file provided by "MathFunctions"
+  with any of the following names:
+
+    MathFunctionsConfig.cmake
+    mathfunctions-config.cmake
+
+  Add the installation prefix of "MathFunctions" to CMAKE_PREFIX_PATH or set
+  "MathFunctions_DIR" to a directory containing one of the above files.  If
+  "MathFunctions" provides a separate development package or SDK, be sure it
+  has been installed.
+```
+
+Set the CMAKE_PREFIX_PATH to where MathFunctions was installed previously and try again. Ensure that the newly created executable runs as expected.
+
+> лучше использовать вариант Config mode команды find_package(), позволяюший указать пути поиска:
+
+```cmake
+find_package(MathFunctions 3.4.1 EXACT CONFIG
+    PATHS "<path>"
+)
+```
+
+<details><summary>Complete lising of CMakeLists.txt</summary>
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(Downstream)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+#find_package(MathFunctions 3.4.1 EXACT)
+find_package(MathFunctions 3.4.1 EXACT CONFIG
+    PATHS "../MathFunctions/out/install/${PRESET_NAME}"
+)
+
+add_executable(myexe main.cxx)
+
+target_link_libraries(myexe PRIVATE MathFunctions::MathFunctions)
+```
+
+</details>
+
