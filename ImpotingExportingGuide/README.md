@@ -58,3 +58,8 @@ target_link_libraries(myexe PRIVATE math)
 ```
 
 The generated build system will link myexe to m.lib when built in the release configuration, and md.lib when built in the debug configuration.
+
+## Exporting - Exporting
+Следующие две основные части объединены в одной [директории](import-export), поскольку взаимосвязаны.
+> В оригинальном туторе это главы, начиная с [Exporting Targets](https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#id6) по [Using the Package Configuration File](https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#id13) включительно.
+
