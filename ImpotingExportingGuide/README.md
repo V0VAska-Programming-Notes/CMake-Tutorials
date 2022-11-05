@@ -63,3 +63,5 @@ The generated build system will link myexe to m.lib when built in the release co
 Следующие две основные части объединены в одной [директории](import-export), поскольку взаимосвязаны.
 > В оригинальном туторе это главы, начиная с [Exporting Targets](https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#id6) по [Using the Package Configuration File](https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#id13) включительно.
 
+## Adding Components
+Данная часть тутора является продолжением 'Exporting - Exporting' и расположена [здесь](adding-components)
